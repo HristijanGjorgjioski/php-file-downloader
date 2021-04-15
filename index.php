@@ -1,7 +1,15 @@
 <?php
+    session_start();
+    if(!$_SESSION['user']) {
+		header("Location: http://localhost/file-downloader/login/login.php");
+	}
+?>
+
+<?php
     if(!empty($_GET['file'])) {
+        $loggedUser = $_SESSION['user'];
         $filename = basename($_GET['file']);
-        $filepath = 'files/user1/'.$filename;
+        $filepath = 'files/'.$loggedUser.'/'.$filename;
 
         if(!empty($filename) && file_exists($filepath)) {
             header('Content-Description: File Transfer');
@@ -32,6 +40,7 @@
     <title>Index</title>
 </head>
 <body>
+    <h3 style="color: red;"><?php echo $_SESSION['user'] ?><h3>
     <form class="example" method="post">
         <input type="text" name="term" placeholder="Search.." required />
         <button type="submit" name="search"><i class="fa fa-search"></i></button>
@@ -42,14 +51,19 @@
 <?php
     if(isset($_POST['search'])) {
         $term = $_POST['term'];
-        $path = "files/user1/$term*";
-        $fileinfo = glob($path);
-        $fileactualname = $fileinfo[1];
-
-        if($fileinfo) {
-            foreach($fileinfo as $item) {
-                echo "$item"."   "."<a href='index.php?file=$item'>Click to download</a>"."<br />";
+        if(strlen($term) < 2) {
+            echo "You must enter 2 charachters before searching.";
+        } else {
+            $loggedUser = $_SESSION['user'];
+            $path = "files/".$loggedUser."/*$term*";
+            $fileinfo = glob($path);
+            
+            if($fileinfo) {
+                foreach($fileinfo as $item) {
+                    echo "<hr />";
+                    echo "$item"."-----------"."<a href='index.php?file=$item'>Click to download</a>"."<br />";
+                };
             };
-        };
+        }
     }
 ?>

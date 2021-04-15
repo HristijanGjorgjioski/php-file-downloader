@@ -12,8 +12,7 @@
             echo '<p class="error">Username password combination is wrong!</p>';
         } else {
             if ($password === $result['password']) {
-                $_SESSION['user_id'] = $result['id'];
-                echo '<p class="success">Congratulations, you are logged in!</p>';
+                $_SESSION['user'] = $result['username'];
                 header("Location: http://localhost/file-downloader/index.php");
             } else {
                 echo '<p class="error">Username password combination is wrong!</p>';
