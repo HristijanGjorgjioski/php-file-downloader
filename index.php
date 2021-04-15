@@ -1,3 +1,26 @@
+<?php
+    if(!empty($_GET['file'])) {
+        $filename = basename($_GET['file']);
+        $filepath = 'files/user1/'.$filename;
+
+        if(!empty($filename) && file_exists($filepath)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="'.basename($filepath).'"');
+            header('Content-Transfer-Encoding: binary');
+            header('Connection: Keep-Alive');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+            readfile($filepath);
+            exit;
+        } else {
+            echo "Error occured";
+            echo "$filepath";
+        }
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,3 +38,18 @@
     </form>
 </body>
 </html>
+
+<?php
+    if(isset($_POST['search'])) {
+        $term = $_POST['term'];
+        $path = "files/user1/$term*";
+        $fileinfo = glob($path);
+        $fileactualname = $fileinfo[1];
+
+        if($fileinfo) {
+            foreach($fileinfo as $item) {
+                echo "$item"."   "."<a href='index.php?file=$item'>Click to download</a>"."<br />";
+            };
+        };
+    }
+?>
