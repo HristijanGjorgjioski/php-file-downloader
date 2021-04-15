@@ -28,19 +28,16 @@
 
         
         if($row = $sth->fetch()) {
-            $link = $row->link;
             ?>
             <br><br><br>
             <table>
                 <tr>
                     <th>Name</th>
-                    <th>Link</th>
-                    <th>User ID</th>
+                    <th>Download</th>
                 </tr>
                 <tr>
                     <td><?php echo $row->fileName; ?></td>
-                    <td><a href="<?php $link ?>"><?php echo $row->link?></a></td>
-                    <td><?php echo $row->userId;?></td>
+                    <td><button type="submit" name="download">Download</button></td>
                 </tr>
             </table>
 <?php
