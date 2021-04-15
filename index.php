@@ -15,35 +15,3 @@
     </form>
 </body>
 </html>
-
-<?php
-    session_start();
-    include('./config/config.php');
-    if (isset($_POST["search"])) {
-        $str = $_POST["term"];
-        $sth = $connection->prepare("SELECT * FROM links WHERE (`fileName` LIKE '%".$str."%')");
-
-        $sth->setFetchMode(PDO:: FETCH_OBJ);
-        $sth -> execute();
-
-        
-        if($row = $sth->fetch()) {
-            ?>
-            <br><br><br>
-            <table>
-                <tr>
-                    <th>Name</th>
-                    <th>Download</th>
-                </tr>
-                <tr>
-                    <td><?php echo $row->fileName; ?></td>
-                    <td><button type="submit" name="download">Download</button></td>
-                </tr>
-            </table>
-<?php
-        } else{
-            echo "Name Does not exist";
-        }
-    }
-
-?>
