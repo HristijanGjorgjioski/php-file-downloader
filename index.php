@@ -1,5 +1,6 @@
 <?php
     session_start();
+    include('./config/config.php');
     if(!isset($_SESSION['user_id'])){
         header('Location: http://localhost/file-downloader/login/login.php');
         exit;
@@ -17,9 +18,9 @@
     <title>Index</title>
 </head>
 <body>
-    <form class="example" action="action_page.php">
-        <input type="text" placeholder="Search.." name="search">
-        <button type="submit"><i class="fa fa-search"></i></button>
+    <form class="example" action="search.php" method="GET">
+        <input type="text" name="term" placeholder="Search.." required />
+        <button type="submit" name="search"><i class="fa fa-search"></i></button>
     </form>
 </body>
 </html>
