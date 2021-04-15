@@ -1,12 +1,3 @@
-<?php
-    session_start();
-    include('./config/config.php');
-    if(!isset($_SESSION['user_id'])){
-        header('Location: http://localhost/file-downloader/login/login.php');
-        exit;
-    }
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,9 +9,44 @@
     <title>Index</title>
 </head>
 <body>
-    <form class="example" action="search.php" method="GET">
+    <form class="example" method="post">
         <input type="text" name="term" placeholder="Search.." required />
         <button type="submit" name="search"><i class="fa fa-search"></i></button>
     </form>
 </body>
 </html>
+
+<?php
+    session_start();
+    include('./config/config.php');
+    if (isset($_POST["search"])) {
+        $str = $_POST["term"];
+        $sth = $connection->prepare("SELECT * FROM links WHERE (`fileName` LIKE '%".$str."%')");
+
+        $sth->setFetchMode(PDO:: FETCH_OBJ);
+        $sth -> execute();
+
+        
+        if($row = $sth->fetch()) {
+            $link = $row->link;
+            ?>
+            <br><br><br>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Link</th>
+                    <th>User ID</th>
+                </tr>
+                <tr>
+                    <td><?php echo $row->fileName; ?></td>
+                    <td><a href="<?php $link ?>"><?php echo $row->link?></a></td>
+                    <td><?php echo $row->userId;?></td>
+                </tr>
+            </table>
+<?php
+        } else{
+            echo "Name Does not exist";
+        }
+    }
+
+?>
