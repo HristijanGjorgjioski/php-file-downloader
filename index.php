@@ -36,17 +36,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link rel="stylesheet" href="index.css">
     <title>Index</title>
 </head>
 <body>
-    <h3 style="color: red;"><?php echo $_SESSION['user'] ?><h3>
+    <nav style="display: flex; justify-content: center; padding: 12px;">
+        <button type="button" class="btn btn-primary"><?php echo $_SESSION['user'] ?></button>--
+        <form method="post">
+            <button type="submit" name="logout" class="btn btn-danger">Logout</button>
+        </form>
+    </nav>
     <form class="example" method="post">
         <input type="text" name="term" placeholder="Search.." required />
         <button type="submit" name="search"><i class="fa fa-search"></i></button>
     </form>
 </body>
 </html>
+
+<?php
+    if(isset($_POST['logout'])) {
+        session_destroy();
+        header("Location: http://localhost/file-downloader/login/login.php");
+    };
+?>
 
 <?php
     if(isset($_POST['search'])) {
@@ -61,7 +74,7 @@
             if($fileinfo) {
                 foreach($fileinfo as $item) {
                     echo "<hr />";
-                    echo "$item"."-----------"."<a href='index.php?file=$item'>Click to download</a>"."<br />";
+                    echo "--------------------------------------".ltrim($item, "files/"."$loggedUser")."--------------------------------------"."<a href='index.php?file=$item'>Click to download</a>"."<br />";
                 };
             };
         }
